@@ -123,7 +123,7 @@ public class YConnectServlet extends HttpServlet {
 				sb.append("<h1>UserInfo Request</h1>");
 				sb.append("UserInfo: <pre>" + userInfoObject + "</pre><br/>");
 				
-				String sql = "UPDATE rakuten.shop SET ACCESS_TOKEN=?,REFRESH_TOKEN=?,UPDATE_TIME=? WHERE SITE='Yahoo' and SHOP_ID=?";
+				String sql = "UPDATE rakuten.shop SET ACCESS_TOKEN=?,REFRESH_TOKEN=?,LOGIN_TIME=? WHERE SITE='Yahoo' and SHOP_ID=?";
 				PreparedStatement ps = con.prepareStatement(sql);
 				ps.setString(1, accessTokenString);
 				ps.setString(2, refreshToken);
