@@ -44,12 +44,7 @@ public class YConnectServlet extends HttpServlet {
 	// (アプリケーションID発行時に登録したURL)
 	private static final String redirectUri = "http://localhost:8000/YConnectServlet/YConnectServlet";
 	
-	private Connection con;
-
-	public YConnectServlet() throws Exception {
-		super();
-		con = JdbcConnection.getConnection();
-	}
+	private Connection con = null;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -123,6 +118,9 @@ public class YConnectServlet extends HttpServlet {
 				sb.append("<h1>UserInfo Request</h1>");
 				sb.append("UserInfo: <pre>" + userInfoObject + "</pre><br/>");
 				
+				if (null == con || con.isClosed()) {
+					con = JdbcConnection.getConnection();
+				}
 				String sql = "UPDATE rakuten.shop SET ACCESS_TOKEN=?,REFRESH_TOKEN=?,LOGIN_TIME=? WHERE SITE='Yahoo' and SHOP_ID=?";
 				PreparedStatement ps = con.prepareStatement(sql);
 				ps.setString(1, accessTokenString);
@@ -141,6 +139,9 @@ public class YConnectServlet extends HttpServlet {
 
 			} else {
 				
+				if (null == con || con.isClosed()) {
+					con = JdbcConnection.getConnection();
+				}
 				String shop = request.getParameter("shop");
 				String sql = "SELECT YAHOO_APP_ID FROM rakuten.shop WHERE SITE = 'Yahoo' AND SHOP_ID = ?";
 				PreparedStatement ps = con.prepareStatement(sql);
